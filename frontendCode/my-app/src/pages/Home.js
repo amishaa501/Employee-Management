@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Home() {
 
     const[ users, setUser]=useState([]);
+    const navigate = useNavigate();
 
     useEffect(()=>{
         // console.log("Hello world")
@@ -28,6 +29,25 @@ export default function Home() {
         console.log(users);
     };
 
+    const viewProfile = (id) => {
+        navigate(`/viewUser/${id}`);
+    };
+    const editProfile = (id) => {
+        navigate(`/editUser/${id}`);
+    };
+    const deleteUser = async (id) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+        if (confirmDelete) {
+            try {
+                await axios.delete(`http://localhost:8080/deleteUser/${id}`);
+                // After successful deletion, reload the users
+                loadUsers();
+            } catch (error) {
+                console.log("Error deleting user:", error);
+            }
+        }
+    };
+
 
   return (
     <div  className='container'>
@@ -40,6 +60,7 @@ export default function Home() {
       <th scope="col">First Name</th>
       <th scope="col">Username</th>
       <th scope="col">Email</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -53,6 +74,11 @@ export default function Home() {
                         <td>{user.name}</td>
                         <td>{user.username}</td>
                         <td>{user.email}</td>
+                        <td>
+                            <button className='btn btn-primary max-2'onClick={() => viewProfile(user.id)}>View</button>
+                            <button className='btn btn-primary-outlined max-2' onClick={() => editProfile(user.id)}>Edit</button>
+                            <button className='btn btn-danger max-2'onClick={() => deleteUser(user.id)}>delete</button>
+                        </td>
                     </tr>
                 );
             })

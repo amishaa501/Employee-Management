@@ -37,5 +37,17 @@ public class UserController {
         return userService.deleteById(id);
     }
 
+    @PutMapping("/editUser/{id}")
+    public String editUser(@RequestBody User newUser, @PathVariable Long id){
+        User fetchedUser =  userService.getUserById(id);
+//        fetchedUser.setId(newUser.getId());
+        fetchedUser.setName(newUser.getName());
+        fetchedUser.setEmail(newUser.getEmail());
+        fetchedUser.setUsername(newUser.getUsername());
+
+        return userService.upsert(fetchedUser);
+
+    }
+
 
 }

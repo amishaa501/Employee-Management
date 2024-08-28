@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import {Link} from 'react-router-dom';
 
 function Navbar() {
   return (
@@ -10,7 +11,7 @@ function Navbar() {
     <span className="navbar-toggler-icon"></span>
   </button>
 
-  <button type="button" className="btn btn-light"> Add User</button>
+  <Link type="button" className="btn btn-light" to="/addUser"> Add User</Link>
   </nav>
     </div>
   )
